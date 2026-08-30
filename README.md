@@ -8,6 +8,8 @@ Neovim integration for the [Quint Tree-sitter parser](https://github.com/kajisha
 - [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) `main`
 - Tree-sitter CLI 0.26.1 or newer
 - A C compiler
+- `curl`
+- `tar`
 
 ## Installation
 
@@ -34,10 +36,17 @@ Install the released Quint parser explicitly:
 :TSInstall quint
 ```
 
-Open a `.qnt` file after installation. To reinstall the pinned parser and its queries:
+Open a `.qnt` file after installation. When this plugin changes its pinned parser
+revision, apply the newer parser and queries with:
 
 ```vim
 :TSUpdate quint
+```
+
+To force reinstall the currently pinned parser and queries, use:
+
+```vim
+:TSInstall! quint
 ```
 
 ## Troubleshooting
