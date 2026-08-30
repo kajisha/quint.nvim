@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          version: v0.12.0
+          neovim: true
+      - name: Install Tree-sitter CLI
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          curl --fail --silent --show-error --location \
+            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.3/tree-sitter-linux-x64.gz \
+            --output "$RUNNER_TEMP/tree-sitter-linux-x64.gz"
+          echo '4f65c8d9ba32a3e37198302569b3306f037f12d8313e3f28cdf1b80c9f2b3a3a  '"$RUNNER_TEMP/tree-sitter-linux-x64.gz" | sha256sum --check
+          gzip --decompress --stdout "$RUNNER_TEMP/tree-sitter-linux-x64.gz" > "$HOME/.local/bin/tree-sitter"
+          chmod +x "$HOME/.local/bin/tree-sitter"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/tree-sitter" --version
+      - name: Fetch nvim-treesitter
+        run: git clone --depth 1 https://github.com/nvim-treesitter/nvim-treesitter .deps/nvim-treesitter
+      - name: Test parser registration
+        env:
+          NVIM_TREESITTER_DIR: ${{ github.workspace }}/.deps/nvim-treesitter
+        run: nvim --headless -u tests/minimal_init.lua -l tests/registration.lua
+      - name: Test Quint integration
+        env:
+          NVIM_TREESITTER_DIR: ${{ github.workspace }}/.deps/nvim-treesitter
+          XDG_DATA_HOME: ${{ runner.temp }}/nvim-data
+          XDG_STATE_HOME: ${{ runner.temp }}/nvim-state
+          XDG_CACHE_HOME: ${{ runner.temp }}/nvim-cache
+        run: |
+          mkdir -p "$XDG_DATA_HOME/nvim/site"
+          nvim --headless -u tests/minimal_init.lua -l tests/integration.lua
