@@ -28,7 +28,7 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           "$HOME/.local/bin/tree-sitter" --version
       - name: Fetch nvim-treesitter
-        run: git clone --depth 1 https://github.com/nvim-treesitter/nvim-treesitter .deps/nvim-treesitter
+        run: git clone --depth 1 --branch main --single-branch https://github.com/nvim-treesitter/nvim-treesitter .deps/nvim-treesitter
       - name: Test parser registration
         env:
           NVIM_TREESITTER_DIR: ${{ github.workspace }}/.deps/nvim-treesitter
