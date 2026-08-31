@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd('User', {
     require('nvim-treesitter.parsers').quint = {
       install_info = {
         url = 'https://github.com/kajisha/quint-tree-sitter',
-        revision = 'v0.1.0',
+        revision = 'v0.2.0',
         queries = 'queries',
       },
     }

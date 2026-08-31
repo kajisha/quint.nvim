@@ -56,7 +56,7 @@ To force reinstall the currently pinned parser and queries, use:
 - Missing `nvim-treesitter.parsers`: use the current `nvim-treesitter` `main` branch with Neovim 0.12+.
 
 The parser and highlight queries are pinned to
-[`quint-tree-sitter` v0.1.0](https://github.com/kajisha/quint-tree-sitter/releases/tag/v0.1.0).
+[`quint-tree-sitter` v0.2.0](https://github.com/kajisha/quint-tree-sitter/releases/tag/v0.2.0).
 
 ## License
 
